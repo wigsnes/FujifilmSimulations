@@ -10,6 +10,11 @@ const nextConfig = {
         hostname: "6w4sba9x1x7bgawo.public.blob.vercel-storage.com",
         port: "",
       },
+      {
+        protocol: "https",
+        hostname: "https://fujifilm-simulations.vercel.app",
+        port: "",
+      },
     ],
   },
 };
