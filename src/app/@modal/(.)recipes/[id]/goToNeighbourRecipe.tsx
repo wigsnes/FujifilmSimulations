@@ -1,6 +1,5 @@
 "use client";
 
-import { Recipe } from "@/types";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef } from "react";
 

@@ -1,7 +1,4 @@
 import { promises as fs } from "fs";
-import { RecipeShowcase } from "@/components/recipe";
-import { Recipe } from "@/types";
-import { Simulate } from "@/components/simulate";
 
 async function openAndConvertToFile(filePath: string) {
   try {

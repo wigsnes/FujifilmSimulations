@@ -1,4 +1,3 @@
-import { promises as fs } from "fs";
 import { Gallery } from "@/components/gallery";
 import { Recipe } from "@/types";
 import { kv } from "@vercel/kv";
