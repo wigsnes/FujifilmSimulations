@@ -1,14 +1,18 @@
 import { promises as fs } from "fs";
 import { Gallery } from "@/components/gallery";
 import { Recipe } from "@/types";
+import { kv } from "@vercel/kv";
 
 export default async function Home() {
-  const file = await fs.readFile(
-    process.cwd() + "/public/recipes/data.json",
-    "utf8"
+  const listOfRecipes = await kv.lrange<number>("recipes", 0, -1);
+  const recipes = await Promise.all(
+    listOfRecipes
+      .map(async (id) => {
+        const recipe = await kv.hgetall<Recipe>(`recipe:${id}`);
+        return recipe;
+      })
+      .filter(Boolean) as Promise<Recipe>[]
   );
-  const data = JSON.parse(file);
-  const recipes = data.recipes as Recipe[];
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
