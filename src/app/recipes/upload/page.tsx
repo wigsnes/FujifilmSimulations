@@ -1,46 +1,35 @@
 "use client";
 
-import type { PutBlobResult } from "@vercel/blob";
-import { useState, useRef } from "react";
+import { NewRecipeForm } from "@/components/new-recipe-form";
+import { useFormState } from "react-dom";
+import { createNewRecipe } from "./actions";
+import { UploadButton } from "@/utils/uploadthing";
+
+const initialState = {
+  message: "",
+};
 
 export default function AvatarUploadPage() {
-  const inputFileRef = useRef<HTMLInputElement>(null);
-  const [blob, setBlob] = useState<PutBlobResult | null>(null);
+  const [state, formAction] = useFormState(createNewRecipe, initialState);
+
   return (
-    <>
-      <h1>Upload Your Image</h1>
-
-      <form
-        onSubmit={async (event) => {
-          event.preventDefault();
-
-          if (!inputFileRef.current?.files) {
-            throw new Error("No file selected");
-          }
-
-          const file = inputFileRef.current.files[0];
-
-          const response = await fetch(
-            `/api/image/upload?filename=${file.name}`,
-            {
-              method: "POST",
-              body: file,
-            }
-          );
-
-          const newBlob = (await response.json()) as PutBlobResult;
-
-          setBlob(newBlob);
-        }}
-      >
-        <input name="file" ref={inputFileRef} type="file" required />
-        <button type="submit">Upload</button>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900">
+      <form action={formAction}>
+        <UploadButton
+          endpoint="imageUploader"
+          onClientUploadComplete={(res: any): any => {
+            // Do something with the response
+            console.log("Files: ", res);
+            alert("Upload Completed");
+          }}
+          onUploadError={(error: Error) => {
+            // Do something with the error.
+            alert(`ERROR! ${error.message}`);
+          }}
+        />
+        <NewRecipeForm />
+        {state.message && <p>{state.message}</p>}
       </form>
-      {blob && (
-        <div>
-          Blob url: <a href={blob.url}>{blob.url}</a>
-        </div>
-      )}
-    </>
+    </div>
   );
 }
