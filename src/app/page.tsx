@@ -1,6 +1,7 @@
 import { Gallery } from "@/components/gallery";
 import { Recipe } from "@/types";
 import { kv } from "@vercel/kv";
+import Link from "next/link";
 
 export default async function Home() {
   const listOfRecipes = await kv.lrange<number>("recipes", 0, -1);
@@ -14,11 +15,9 @@ export default async function Home() {
   );
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <h1 className="text-4xl font-bold mb-10 font-mono">
-        Fujifilm Film Simulation Recipes
-      </h1>
+    <main className="flex min-h-screen flex-col items-center justify-between px-16 py-32">
       <Gallery recipes={recipes} />
+      <Link href="https://www.google.com/">Google</Link>
     </main>
   );
 }
